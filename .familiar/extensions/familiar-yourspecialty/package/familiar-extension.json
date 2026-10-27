@@ -1,0 +1,28 @@
+{
+  "contract": "1.1",
+  "id": "familiar-yourspecialty",
+  "display_name": "familiar YourSpecialty",
+  "version": "1.0.0",
+  "core": ">=1.0.0 <2.0.0",
+  "type": "specialty",
+  "namespace": "familiar-yourspecialty",
+  "contributions": {
+    "routes": [
+      {"id": "familiar-yourspecialty.example-skill", "skill": "example-skill", "select_when": "Replace with the one-line trigger a session should match to select this skill"}
+    ],
+    "skills": ["example-skill"],
+    "agents": ["example-agent"],
+    "state_surfaces": [],
+    "checkin_fragments": ["familiar-system/checkin-fragment.md"]
+  },
+  "capabilities": {
+    "required": ["project-instructions", "explicit-skills", "file-read"],
+    "optional": ["named-subagents", "file-write"]
+  },
+  "unavailable_behavior": "degrade",
+  "compatible_with": [],
+  "conflicts": [],
+  "package": {
+    "update_source": null
+  }
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: "familiar-yourspecialty:example-skill"
+  short_description: "Explicit familiar workflow"
+policy:
+  allow_implicit_invocation: false
