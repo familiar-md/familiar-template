@@ -19,7 +19,7 @@ To add it to an existing [familiar-workspace](https://github.com/familiar-md/fam
    which belong to the package's source repo, not to a project: copying the three entry files would
    replace the project's own, copying `_about.md` would overwrite the core folder guide at the
    project root, and `VERSION` would sit there looking like the project's own.
-2. Open Claude Code, Codex, or Gemini CLI in the project as usual. No install step, no restart beyond
+2. Open your AI assistant in the project as usual. No install step, no restart beyond
    opening a new session — skills and agents are discovered by file presence.
 
 Depends on familiar core `>=1.0.0 <2.0.0` (see `familiar-extension.json`).

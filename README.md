@@ -9,8 +9,8 @@ right for you.
 
 ## Build it with an AI agent
 
-The easiest way to build an extension is to open Claude Code, Codex, or Gemini CLI in your copy and
-tell it what your specialty is. `AGENTS.md` (loaded by `CLAUDE.md` and `GEMINI.md`) briefs the agent:
+The easiest way to build an extension is to open your AI coding assistant (Claude Code, for example)
+in your copy and tell it what your specialty is. `AGENTS.md` (loaded by `CLAUDE.md` and `GEMINI.md`) briefs the agent:
 it interviews you about the jobs your specialty involves, proposes the skills, writes them in both
 host copies, and checks them as it goes. `CORE-RULES.md` gives it the rules every familiar skill
 lives inside (grounding, no fabrication, the project boundary, where state lives, retrieval), so what
@@ -23,7 +23,8 @@ is meant for sending changes back here. A template copy is your own clean repo.
 
 This is not a copy of familiar core, and it does not need to be. Get core itself from
 [github.com/familiar-md/familiar](https://github.com/familiar-md/familiar) the normal way — download
-`familiar-workspace/`, per its own `INSTALL.md` — and update it the normal way, on its own schedule.
+`familiar-workspace-<version>.zip` from its Releases page — and update it the normal way, on its own
+schedule.
 This template only ever contains the extension package: skills, agents, and the manifest that tells
 core how to route to them. It merges onto a core project; it never contains one.
 
@@ -51,8 +52,8 @@ core how to route to them. It merges onto a core project; it never contains one.
 6. To try it: copy only `.claude/`, `.agents/`, `.codex/`, `.gemini/`, and `.familiar/` from your
    copy into the root of a real `familiar-workspace/`-based project, merging with what's there (see
    `_about.md` for the exact mechanics). Never copy this repo's `AGENTS.md`, `CLAUDE.md` or
-   `GEMINI.md`: they would replace the project's own entry files. Open Claude Code, Codex, or Gemini
-   CLI in that project. No install step.
+   `GEMINI.md`: they would replace the project's own entry files. Open your assistant in that project.
+   No install step.
 
 ## Check your extension
 
