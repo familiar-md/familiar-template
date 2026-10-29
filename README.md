@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/familiar-template-banner.svg" alt="familiar: template extension" width="720">
+</p>
+
 # familiar-template
 
 Starter scaffold for building your own familiar specialty extension — the same kind of drop-in
