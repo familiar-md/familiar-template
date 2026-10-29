@@ -77,6 +77,20 @@ template is not shippable) and WARN for the placeholder names. Expect those unti
 rewrite. It does not replace `CONTRACT-CHECKLIST.md`: it cannot judge whether your `_about.md` lists
 the right paths, whether your capability claims are honest, or whether your `core` range is accurate.
 
+## Releasing a version
+
+Before you hand out a version, raise `version` in `familiar-extension.json` and run:
+
+```text
+python check_extension.py --release
+```
+
+When every check passes, it writes `.familiar/release-manifests/<your-id>.json`, a fingerprint of
+each file your extension ships. Zip the `.claude/`, `.agents/`, `.codex/`, `.gemini/` and `.familiar/`
+folders together. With the manifest inside, users update your extension the same way as core: they
+drop the zip in their project's `_update/` folder and run `/system-settings` → Update, which replaces
+only the files they have not edited. Without it, they have to copy the folders over again by hand.
+
 ## Invoking your skills
 
 Each host starts an explicit skill differently, so tell your users the form that matches theirs:

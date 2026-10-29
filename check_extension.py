@@ -2,12 +2,18 @@
 """Check a familiar specialty extension against extension contract 1.1.
 
 Usage:
-    python check_extension.py [path] [--project <familiar project root>]
+    python check_extension.py [path] [--project <familiar project root>] [--release]
 
 `path` is the extension repo root (the folder holding .claude/, .agents/, .codex/, .gemini/ and
 .familiar/extensions/<id>/package/familiar-extension.json). It defaults to the folder this script
 sits in. With --project, the extension is also checked for collisions against that project's core
 route IDs, skill folders, and agent names.
+
+With --release, and only when no check FAILs, it also writes the extension's release manifest,
+`.familiar/release-manifests/<id>.json`: a fingerprint of every file the extension ships. Run it
+before each release you share. With the manifest in place, a user updates the extension the same way
+as core, by dropping its zip in the project's `_update/` folder and running `/system-settings` →
+Update; without it, they have to copy the folders over again by hand.
 
 Standard library only. Exit code 0 when no check FAILs, 1 otherwise. WARN never fails.
 
@@ -23,6 +29,7 @@ if sys.version_info < (3, 10):
              "(.familiar/scripts/doctor.py says how), then run this again with it." % (*sys.version_info[:2], sys.executable))
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -291,6 +298,8 @@ def main(argv=None):
     ap.add_argument("path", nargs="?", default=str(Path(__file__).resolve().parent),
                     help="extension repo root (default: the folder containing this script)")
     ap.add_argument("--project", help="familiar project root, to check for ID collisions with core")
+    ap.add_argument("--release", action="store_true",
+                    help="when every check passes, write .familiar/release-manifests/<id>.json")
     args = ap.parse_args(argv)
 
     root = Path(args.path).resolve()
@@ -476,7 +485,41 @@ def main(argv=None):
         else:
             check_project_collisions(project, manifest, skills, agents, r)
 
+    if args.release:
+        if r.fails:
+            print("\nNo release manifest written: fix the FAILs first.")
+        else:
+            path = write_release_manifest(root, mid, manifest["version"])
+            print("\nrelease manifest: %s" % path.relative_to(root).as_posix())
     return finish(r)
+
+
+# The same rules familiar's updater (`.familiar/scripts/update.py` in familiar-workspace) uses to
+# tell an untouched file from an edited one. Keep them identical, or the updater reports every file
+# of the extension as edited.
+SKIP_PARTS = {"__pycache__", ".git", ".vscode", "release-manifests"}
+SKIP_NAMES = {"settings.local.json", "settings.json"}
+HOST_TREES = (".claude", ".agents", ".codex", ".gemini")
+
+
+def fingerprint(data):
+    # CRLF folded to LF for text, so a line-ending change is not mistaken for an edit.
+    return hashlib.sha256(data if b"\0" in data[:8000] else data.replace(b"\r\n", b"\n")).hexdigest()
+
+
+def write_release_manifest(root, ext_id, version):
+    files = {}
+    for path in sorted(root.rglob("*")):
+        rel = path.relative_to(root)
+        if not path.is_file() or SKIP_PARTS & set(rel.parts) or path.name in SKIP_NAMES:
+            continue
+        if rel.parts[0] in HOST_TREES or rel.parts[0] == ".familiar":
+            files[rel.as_posix()] = fingerprint(path.read_bytes())
+    out = root / ".familiar" / "release-manifests" / ("%s.json" % ext_id)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    record = {"schema": 1, "owner": ext_id, "version": version, "build": None, "files": files, "blocks": {}}
+    out.write_text(json.dumps(record, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return out
 
 
 def finish(r):
