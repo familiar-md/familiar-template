@@ -58,7 +58,7 @@ line declares.
 | `2-Drafts/` | The agent | Deliverables waiting for the user's review. Save with `.familiar/scripts/draft_save.py`: `next` gives the versioned path to write, `register` adds the file's row to `_draft-index.md`. |
 | `3-Knowledge/` | The agent | One page per ingested source, cataloged in `_knowledge-index.md`. Read the index first, then the page. To add a page, follow core's ingest rules (`.familiar/core/ingest.md`) rather than writing your own format. |
 | `4-Trackers/` | The agent | `tasks.md`, `timeline.md`, `meetings.md`. Follow the column rules in `state-schema.md` → Tracker conventions exactly; scripts and the hub parse them. |
-| `5-System/` | The agent | Config, context, status snapshot and log, decisions, handoffs, preferences, notes. Most of it belongs to core's own skills: leave status, memory and handoffs to `save`, `handoff` and `checkin` unless your skill truly owns a change. |
+| `5-System/` | The agent | Config, context, status snapshot and log, decisions, handoffs, preferences, notes. Most of it belongs to core's own skills: leave status, memory and handoffs to `save`, `handoff` and `project-status` unless your skill truly owns a change. |
 
 **Your own state.** If your specialty needs a file of its own (a register, a tracker), declare it in
 the manifest under `contributions.state_surfaces` with its `path`, `schema_version`,
